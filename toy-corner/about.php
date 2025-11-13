@@ -1,4 +1,4 @@
-<?php
+<?php 
 // FIXED INCLUDES
 if(file_exists('includes/header.php')) {
     include 'includes/header.php';
@@ -365,6 +365,4 @@ if(file_exists('includes/footer.php')) {
     </html>
     <?php
 }
-
 ?>
-

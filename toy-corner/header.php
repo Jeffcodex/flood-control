@@ -178,28 +178,28 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </div>
             
             <div class="nav-links" id="navLinks">
-    <a href="index.php" class="<?php echo $current_page == 'index.php' ? 'active' : ''; ?>">Home</a>
-    <a href="about.php" class="<?php echo $current_page == 'about.php' ? 'active' : ''; ?>">About Us</a>
-    <a href="services.php" class="<?php echo $current_page == 'services.php' ? 'active' : ''; ?>">Services</a>
-    <a href="products.php" class="<?php echo $current_page == 'products.php' ? 'active' : ''; ?>">Products</a>
-    <a href="contact.php" class="<?php echo $current_page == 'contact.php' ? 'active' : ''; ?>">Contact Us</a>
-    
-    <?php if(isset($_SESSION['user_id'])): ?>
-        <!-- KAPAG NAKA-LOGIN - Show Dashboard & Logout -->
-        <?php if($_SESSION['user_type'] == 'admin'): ?>
-            <a href="admin.php" class="<?php echo $current_page == 'admin.php' ? 'active' : ''; ?>">Admin Dashboard</a>
-        <?php else: ?>
-            <a href="client.php" class="<?php echo $current_page == 'client.php' ? 'active' : ''; ?>">My Dashboard</a>
-        <?php endif; ?>
-        <a href="logout.php" class="logout-btn">Logout (<?php echo htmlspecialchars($_SESSION['username']); ?>)</a>
-    <?php else: ?>
-        <!-- KAPAG HINDI NAKA-LOGIN - Show Login/Register -->
-        <div class="auth-buttons">
-            <button class="login-btn" id="loginBtn">Login</button>
-            <button class="register-btn" id="registerBtn">Register</button>
-        </div>
-    <?php endif; ?>
-</div>
+                <a href="index.php" class="<?php echo $current_page == 'index.php' ? 'active' : ''; ?>">Home</a>
+                <a href="about.php" class="<?php echo $current_page == 'about.php' ? 'active' : ''; ?>">About Us</a>
+                <a href="services.php" class="<?php echo $current_page == 'services.php' ? 'active' : ''; ?>">Services</a>
+                <a href="products.php" class="<?php echo $current_page == 'products.php' ? 'active' : ''; ?>">Products</a>
+                <a href="contact.php" class="<?php echo $current_page == 'contact.php' ? 'active' : ''; ?>">Contact Us</a>
+                
+                <?php if(isset($_SESSION['user_id'])): ?>
+                    <!-- SHOW DASHBOARD & LOGOUT IF LOGGED IN -->
+                    <?php if($_SESSION['user_type'] == 'admin'): ?>
+                        <a href="admin.php" class="<?php echo $current_page == 'admin.php' ? 'active' : ''; ?>">Admin Dashboard</a>
+                    <?php else: ?>
+                        <a href="client.php" class="<?php echo $current_page == 'client.php' ? 'active' : ''; ?>">My Dashboard</a>
+                    <?php endif; ?>
+                    <a href="logout.php" class="logout-btn">Logout (<?php echo htmlspecialchars($_SESSION['username']); ?>)</a>
+                <?php else: ?>
+                    <!-- SHOW LOGIN/REGISTER IF NOT LOGGED IN -->
+                    <div class="auth-buttons">
+                        <button class="login-btn" id="loginBtn">Login</button>
+                        <button class="register-btn" id="registerBtn">Register</button>
+                    </div>
+                <?php endif; ?>
+            </div>
             
             <div class="menu-toggle" id="menuToggle">
                 <span></span>
