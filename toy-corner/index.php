@@ -1,8 +1,4 @@
 <?php 
-session_start();
-
-
-
 // FIXED INCLUDES - Check multiple possible paths
 if(file_exists('includes/header.php')) {
     include 'includes/header.php';
@@ -168,6 +164,7 @@ function getSampleProducts() {
     font-weight: bold;
     transition: all 0.3s ease;
     border: 2px solid #fff;
+    margin: 5px;
 }
 
 .simple-banner-btn:hover {
@@ -356,6 +353,45 @@ function getSampleProducts() {
     font-weight: bold;
 }
 
+/* ✅ UPDATED: AUTH BUTTONS STYLES */
+.auth-buttons-container {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.auth-btn-primary {
+    display: inline-block;
+    background: #fff;
+    color: #000;
+    padding: 12px 25px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    border: 2px solid #fff;
+    margin: 8px;
+    font-size: 1.1em;
+}
+
+.auth-btn-secondary {
+    display: inline-block;
+    background: transparent;
+    color: #fff;
+    padding: 12px 25px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    border: 2px solid #fff;
+    margin: 8px;
+    font-size: 1.1em;
+}
+
+.auth-btn-primary:hover, .auth-btn-secondary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255,255,255,0.3);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .simple-banner {
@@ -387,6 +423,12 @@ function getSampleProducts() {
         margin: 20px;
         padding: 20px;
     }
+    
+    .auth-btn-primary, .auth-btn-secondary {
+        display: block;
+        margin: 10px auto;
+        width: 200px;
+    }
 }
 </style>
 
@@ -400,6 +442,14 @@ function getSampleProducts() {
                 <h2>Welcome to ToyRex Corner! 🎮</h2>
                 <p>Your ultimate destination for premium toy collections!</p>
                 <a href="products.php" class="simple-banner-btn">Shop Now 🛒</a>
+                
+                <!-- ✅ UPDATED: AUTH BUTTONS IN BANNER -->
+                <?php if(!isset($_SESSION['user_id'])): ?>
+                    <div class="auth-buttons-container">
+                        <a href="auth.php?tab=login" class="auth-btn-primary">🔐 Login to Account</a>
+                        <a href="auth.php?tab=register" class="auth-btn-secondary">🚀 Create Account</a>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
         
@@ -410,6 +460,13 @@ function getSampleProducts() {
                 <h2>Premium Collections ✨</h2>
                 <p>Discover exclusive figures and limited editions</p>
                 <a href="products.php" class="simple-banner-btn">Explore Collections</a>
+                
+                <?php if(!isset($_SESSION['user_id'])): ?>
+                    <div class="auth-buttons-container">
+                        <a href="auth.php?tab=login" class="auth-btn-primary">🔐 Login to Account</a>
+                        <a href="auth.php?tab=register" class="auth-btn-secondary">🚀 Create Account</a>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
         
@@ -420,6 +477,13 @@ function getSampleProducts() {
                 <h2>Limited Editions 🎯</h2>
                 <p>Exclusive items that won't last long!</p>
                 <a href="products.php" class="simple-banner-btn">Grab Yours</a>
+                
+                <?php if(!isset($_SESSION['user_id'])): ?>
+                    <div class="auth-buttons-container">
+                        <a href="auth.php?tab=login" class="auth-btn-primary">🔐 Login to Account</a>
+                        <a href="auth.php?tab=register" class="auth-btn-secondary">🚀 Create Account</a>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
         
@@ -430,6 +494,13 @@ function getSampleProducts() {
                 <h2>Special Offers 🔥</h2>
                 <p>Limited time discounts and promotions</p>
                 <a href="products.php" class="simple-banner-btn">View Deals</a>
+                
+                <?php if(!isset($_SESSION['user_id'])): ?>
+                    <div class="auth-buttons-container">
+                        <a href="auth.php?tab=login" class="auth-btn-primary">🔐 Login to Account</a>
+                        <a href="auth.php?tab=register" class="auth-btn-secondary">🚀 Create Account</a>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -448,6 +519,14 @@ function getSampleProducts() {
         <div class="welcome-content">
             <h2>Welcome to ToyRex Corner! 🎮</h2>
             <p>Your ultimate destination for premium toy collections! From action figures to adorable chibis, we bring your favorite characters to life. 🚀</p>
+            
+            <!-- ✅ UPDATED: ADDED AUTH BUTTONS IN WELCOME SECTION -->
+            <?php if(!isset($_SESSION['user_id'])): ?>
+                <div style="text-align: center; margin: 30px 0;">
+                    <a href="auth.php?tab=login" class="auth-btn-primary" style="background: #000; color: #fff; border-color: #000;">🔐 Login to Account</a>
+                    <a href="auth.php?tab=register" class="auth-btn-secondary" style="color: #000; border-color: #000;">🚀 Create Account</a>
+                </div>
+            <?php endif; ?>
             
             <div class="features">
                 <div class="feature-item">
@@ -506,7 +585,7 @@ function getSampleProducts() {
                         <p class="product-stock">Only <?php echo $product['quantity']; ?> left!</p>
                         
                         <!-- FIXED: WORKING QUICK VIEW BUTTON -->
-                        <button class="view-product-btn" 
+                        <button class="view-product-btn" 	
                                 onclick="openProductModal(<?php echo htmlspecialchars(json_encode($product)); ?>, '<?php echo $imageExists ? $imagePath : ''; ?>')">
                             Quick View 👀
                         </button>
@@ -547,7 +626,8 @@ function getSampleProducts() {
                     <?php if(isset($_SESSION['user_id']) && $_SESSION['user_type'] == 'client'): ?>
                         <button class="add-to-cart-modal" id="addToCartModal">Add to Cart 🛒</button>
                     <?php elseif(!isset($_SESSION['user_id'])): ?>
-                        <button class="login-to-buy" onclick="openLoginModal()">Login to Purchase 🔐</button>
+                        <!-- ✅ UPDATED: LINK TO AUTH.PHP INSTEAD OF MODAL -->
+                        <a href="auth.php?tab=login" class="login-to-buy" style="display: block; text-decoration: none; text-align: center;">Login to Purchase 🔐</a>
                     <?php endif; ?>
                     <a href="products.php" class="view-all-products">View All Products</a>
                 </div>
@@ -722,16 +802,6 @@ function openProductModal(product, imagePath) {
     // Show modal
     document.getElementById('productModal').classList.add('active');
     document.body.style.overflow = 'hidden';
-}
-
-function openLoginModal() {
-    document.getElementById('productModal').classList.remove('active');
-    // Trigger the login modal from header
-    const loginModal = document.getElementById('loginModal');
-    if (loginModal) {
-        loginModal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
 }
 
 // Initialize when page loads
