@@ -1,10 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToyRex Corner - Premium Products</title>
+  
+    <link rel="icon" type="image/x-icon" href="assets/images/logo1.png">
+    <link rel="stylesheet" href="assets/css/style.css">
+
+</head>
 <?php
-// REMOVE session_start() from here if nandito
+ob_start();
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-
-ob_start();
 
 if(file_exists('config/database.php')) {
     include 'config/database.php';
@@ -30,26 +39,16 @@ function getProductImage($productName) {
     ];
     
     $baseName = $imageMap[$productName] ?? 'default';
-    
-    // Try different case variations
-    $variations = [
-        $baseName . '.png',
-        $baseName . '.PNG',
-        $baseName . '.jpg',
-        $baseName . '.JPG',
-        strtolower($baseName) . '.png',
-        strtolower($baseName) . '.jpg'
-    ];
-    
-    foreach ($variations as $filename) {
-        $fullPath = "assets/images/" . $filename;
+    $extensions = ['.png', '.jpg', '.jpeg', '.PNG', '.JPG', '.JPEG'];
+    foreach ($extensions as $ext) {
+        $fullPath = "assets/images/" . $baseName . $ext;
         if (file_exists($fullPath)) {
-            return $filename;
+            return $baseName . $ext;
         }
     }
-    
     return 'default.jpg';
 }
+
 // ORDER SYSTEM - CREATE ORDER IN DATABASE
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
     if (!isset($_SESSION['user_id']) || $_SESSION['user_type'] != 'client') {
@@ -331,6 +330,27 @@ include 'includes/header.php';
     color: #cccccc;
 }
 
+/* ✅ UPDATED: HERO BUTTON STYLES */
+.hero-auth-btn {
+    display: inline-block;
+    background: #ffffff;
+    color: #000000;
+    padding: 15px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    border: 2px solid #ffffff;
+    margin: 10px;
+    font-size: 1.1em;
+}
+
+.hero-auth-btn:hover {
+    background: transparent;
+    color: #ffffff;
+    transform: translateY(-3px);
+}
+
 /* ===== NO PRODUCTS STYLE ===== */
 .no-products {
     text-align: center;
@@ -361,6 +381,12 @@ include 'includes/header.php';
     
     .image-container {
         height: 200px;
+    }
+    
+    .hero-auth-btn {
+        display: block;
+        margin: 10px auto;
+        width: 200px;
     }
 }
 
@@ -413,9 +439,11 @@ include 'includes/header.php';
         <h1>Premium Toy Collection</h1>
         <p>Discover Exclusive Figures & Limited Editions</p>
         <?php if(!isset($_SESSION['user_id'])): ?>
-            <button onclick="openLoginModal()" class="gallery-btn" style="width: auto; padding: 15px 40px; display: inline-block; margin-top: 10px;">
-                Login to Start Ordering
-            </button>
+            <!-- ✅ UPDATED: DIRECT LINKS TO AUTH.PHP -->
+            <div style="text-align: center; margin-top: 25px;">
+                <a href="auth.php?tab=login" class="hero-auth-btn">🔐 Login to Start Ordering</a>
+                <a href="auth.php?tab=register" class="hero-auth-btn" style="background: transparent; color: #ffffff; border: 2px solid #ffffff;">🚀 Create Account</a>
+            </div>
         <?php endif; ?>
     </div>
 </section>
@@ -478,8 +506,9 @@ include 'includes/header.php';
                                 </button>
                             </form>
                         <?php elseif(!isset($_SESSION['user_id'])): ?>
-                            <a href="javascript:void(0)" onclick="openLoginModal()" class="gallery-btn login-btn">
-                                Login to Order
+                            <!-- ✅ UPDATED: DIRECT LINK TO AUTH.PHP -->
+                            <a href="auth.php?tab=login" class="gallery-btn login-btn">
+                                🔐 Login to Order
                             </a>
                         <?php else: ?>
                             <button class="gallery-btn" disabled>
@@ -543,21 +572,15 @@ include 'includes/header.php';
 <?php endif; ?>
 <?php endif; ?>
 
-<!-- FLOATING LOGIN BUTTON FOR MOBILE -->
+<!-- ✅ UPDATED: FLOATING LOGIN BUTTON FOR MOBILE -->
 <?php if(!isset($_SESSION['user_id'])): ?>
-    <a href="javascript:void(0)" onclick="openLoginModal()" class="floating-login-btn">
-        Login
+    <a href="auth.php?tab=login" class="floating-login-btn">
+        🔐 Login
     </a>
 <?php endif; ?>
 
 <script>
-function openLoginModal() {
-    const loginModal = document.getElementById('loginModal');
-    if (loginModal) {
-        loginModal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-}
+// ✅ UPDATED: REMOVED openLoginModal FUNCTION SINCE DIRECT LINK NA
 
 // Add smooth scrolling
 document.addEventListener('DOMContentLoaded', function() {
